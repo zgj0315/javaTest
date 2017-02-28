@@ -64,6 +64,12 @@
             <version>19.0</version>
         </dependency>
 
+        <!--kafka-->
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-clients</artifactId>
+            <version>0.10.2.0</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

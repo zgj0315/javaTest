@@ -16,9 +16,8 @@ public class StartRunnerComponent implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        //初始化ES连接信息
-        log.info("start init es");
+        log.info("start StartRunnerComponent");
 
-        log.info("end init es");
+        log.info("end StartRunnerComponent");
     }
 }
