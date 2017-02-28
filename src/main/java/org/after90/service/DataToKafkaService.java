@@ -16,16 +16,12 @@ public class DataToKafkaService {
     private KafkaRepository kafka;
 
     public void dataToKafka() {
-        while (true) {
-            String strKey = "this is key ";
-            String strValue = "this is value ";
+        for (int i = 0; i < 1000; i++) {
+            String strKey = "key " + i + " ";
+            String strValue = "value " + i + " ";
             long lNow = System.currentTimeMillis();
             kafka.producer.send(new ProducerRecord<String, String>("topic_test", strKey + lNow, strValue + lNow));
-            try {
-                Thread.sleep(100);
-            } catch (Exception e) {
-                log.error("", e);
-            }
+            log.info("data to kafka, key:{}", strKey);
         }
     }
 }

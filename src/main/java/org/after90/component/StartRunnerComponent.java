@@ -27,18 +27,18 @@ public class StartRunnerComponent implements CommandLineRunner {
     public void run(String... args) throws Exception {
         log.info("start StartRunnerComponent");
         kafkaRepository.initProducer();
-        new Thread() {
-            @Override
-            public void run() {
-                dataToKafka.dataToKafka();
-            }
-        }.start();
-        new Thread() {
-            @Override
-            public void run() {
-                dataFromKafka.dataFromKafka();
-            }
-        }.start();
+//        new Thread() {
+//            @Override
+//            public void run() {
+//                dataToKafka.dataToKafka();
+//            }
+//        }.start();
+//        new Thread() {
+//            @Override
+//            public void run() {
+//                dataFromKafka.dataFromKafka();
+//            }
+//        }.start();
 
         log.info("end StartRunnerComponent");
     }
