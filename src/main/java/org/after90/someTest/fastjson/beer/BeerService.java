@@ -19,9 +19,9 @@ public class BeerService {
     public void beerCount() {
         int nMoney = 10;
         Beer beer = new Beer();
-        beer.setNBeer(5);
-        beer.setNBottle(5);
-        beer.setNCover(5);
+        beer.setNBeer(nMoney / 2);
+        beer.setNBottle(nMoney / 2);
+        beer.setNCover(nMoney / 2);
 
         while (beer.doCount()) {
             log.info("继续喝");
