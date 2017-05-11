@@ -41,5 +41,9 @@ public class FastjsonServiceTest {
         fastjson.json2string();
     }
 
+    @Test
+    public void testFaltObject() throws Exception {
+        fastjson.fastObject();
+    }
 
 } 
