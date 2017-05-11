@@ -97,7 +97,6 @@ public class FastjsonService {
 //        }
     }
 
-    private Map<String, Object> map = new HashMap<String, Object>();
 
     //展开Object
     public void fastObject() {
@@ -110,28 +109,107 @@ public class FastjsonService {
         doFlat("", object);
     }
 
-    private void doFlat(String strPrefix, JSONObject object) {
+    private JSONObject output = new JSONObject();
+    private String strTopKey = "";
+
+    //只展开第一层的数据，后续的不展开
+    public void flatNTI() {
+        String strJson = "{\n" +
+                "        \"update_time\" : \"2016-07-06T17:03:37\",\n" +
+                "        \"country\" : \"Ukraine\",\n" +
+                "        \"services\" : [ {\n" +
+                "          \"apps\" : [ ],\n" +
+                "          \"layer\" : {\n" +
+                "            \"application\" : {\n" +
+                "              \"protocol\" : \"protocol01\"\n" +
+                "            },\n" +
+                "            \"transport\" : {\n" +
+                "              \"protocol\" : \"protocol02\",\n" +
+                "              \"port\" : \"1900\"\n" +
+                "            }\n" +
+                "          },\n" +
+                "          \"banner\" : \"HTTP/1.1 100 OK\",\n" +
+                "          \"update_time\" : \"2016-05-01T08:50:17\"\n" +
+                "        }, {\n" +
+                "          \"banner\" : \"HTTP/1.1 200 OK\",\n" +
+                "          \"update_time\" : \"2016-07-06T17:03:37\",\n" +
+                "          \"apps\" : [{\"product\":\"php\"},{\"product\":\"asp\"} ],\n" +
+                "          \"layer\" : {\n" +
+                "            \"application\" : {\n" +
+                "              \"protocol\" : \"protocol11\"\n" +
+                "            },\n" +
+                "            \"transport\" : {\n" +
+                "              \"protocol\" : \"protocol12\",\n" +
+                "              \"port\" : 32768\n" +
+                "            }\n" +
+                "          }\n" +
+                "        } ],\n" +
+                "        \"location\" : \"50.45465850830078,30.523799896240234\",\n" +
+                "        \"country_code\" : \"UA\",\n" +
+                "        \"created_time\" : \"2016-07-06T17:03:37\"\n" +
+                "      }";
+        //log.info("strJson:{}", strJson);
+        JSONObject object = JSONObject.parseObject(strJson);
         for (Map.Entry<String, Object> entry : object.entrySet()) {
-            if ("com.alibaba.fastjson.JSONArray".equals(entry.getValue().getClass().getName())) {
-                readArrObject(strPrefix + ("".equals(strPrefix) ? "" : "_") + entry.getKey(), (JSONArray) entry.getValue());
-            } else if ("com.alibaba.fastjson.JSONObject".equals(entry.getValue().getClass().getName())) {
-                readObject(strPrefix + ("".equals(strPrefix) ? "" : "_") + entry.getKey(), (JSONObject) entry.getValue());
-            } else if ("java.lang.String".equals(entry.getValue().getClass().getName())) {
-                //log.info("type:{}", entry.getValue().getClass().getName());
-                log.info("key:{}, value:{}", strPrefix + ("".equals(strPrefix) ? "" : "_") + entry.getKey(), entry.getValue());
+            String strKey = entry.getKey();
+            Object value = entry.getValue();
+            strTopKey = strKey;
+            if ("com.alibaba.fastjson.JSONArray".equals(value.getClass().getName())) {
+                log.info("strkey:{}", strKey);
+                readArrObject(strKey, (JSONArray) value);
+            } else if ("com.alibaba.fastjson.JSONObject".equals(value.getClass().getName())) {
+                log.info("strkey:{}", strKey);
+                readObject(strKey, (JSONObject) entry.getValue());
+            } else {
+                //不操作，保持原样
+                output.put(strKey, value);
+                log.info("key:{}, value:{}", strKey, value);
+            }
+        }
+        log.info("output:{}", output);
+    }
+
+
+    private void doFlat(String strPrefix, JSONObject object) {
+        JSONObject objectTmp = new JSONObject();
+        for (Map.Entry<String, Object> entry : object.entrySet()) {
+            String strKey = entry.getKey();
+            Object value = entry.getValue();
+            log.info("strTopKey:{}", strTopKey);
+            if ("com.alibaba.fastjson.JSONArray".equals(value.getClass().getName())) {
+                log.info("strKey:{}", strKey);
+                //不展开数组，直接输出
+                //readArrObject(strPrefix + ("".equals(strPrefix) ? "" : "-") + strKey, (JSONArray) value);
+                objectTmp.put(strPrefix + ("".equals(strPrefix) ? "" : "-") + strKey, value);
+            } else if ("com.alibaba.fastjson.JSONObject".equals(value.getClass().getName())) {
+                log.info("strKey:{}", strKey);
+                readObject(strPrefix + ("".equals(strPrefix) ? "" : "-") + strKey, (JSONObject) value);
+            } else {
+                objectTmp.put(strPrefix + ("".equals(strPrefix) ? "" : "-") + strKey, value);
+                log.info("key:{}, value:{}", strPrefix + ("".equals(strPrefix) ? "" : "-") + strKey, value);
             }
         }
     }
 
+    //strTopKey，最外层的key
     private void readArrObject(String strPrefix, JSONArray jsonList) {
+        //来开始折腾
+        JSONArray jsons = (JSONArray) output.get(strTopKey);
+        if (jsons == null) {
+            jsons = new JSONArray();
+        }
         for (Object object : jsonList) {
+            log.info("strPrefix:{}", strPrefix);
             doFlat(strPrefix, (JSONObject) object);
         }
+        output.put(strTopKey, jsons);
     }
 
     private void readObject(String strPrefix, JSONObject object) {
+        log.info("strPrefix:{}", strPrefix);
         for (Map.Entry<String, Object> entry : object.entrySet()) {
-            doFlat(strPrefix + ("".equals(strPrefix) ? "" : "_") + entry.getKey(), (JSONObject) entry.getValue());
+            log.info("strKey:{}", entry.getKey());
+            doFlat(strPrefix + ("".equals(strPrefix) ? "" : "-") + entry.getKey(), (JSONObject) entry.getValue());
         }
     }
 

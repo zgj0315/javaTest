@@ -2,7 +2,7 @@ package test.org.after90.someTest.fastjson;
 
 import lombok.extern.slf4j.Slf4j;
 import org.after90.Application;
-import org.after90.someTest.fastjson.FastjsonService;
+import org.after90.someTest.fastjson.FlatJsonService;
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.After;
@@ -12,38 +12,23 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 /**
- * FastjsonService Tester.
+ * FlatJsonService Tester.
  *
  * @author <Authors name>
  * @version 1.0
- * @since <pre>Mar 19, 2017</pre>
+ * @since <pre>May 11, 2017</pre>
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
 @Slf4j
-public class FastjsonServiceTest {
+public class FlatJsonServiceTest {
     @Autowired
-    private FastjsonService fastjson;
-
-    @Before
-    public void before() throws Exception {
-    }
-
-    @After
-    public void after() throws Exception {
-    }
-
-    /**
-     * Method: json2string()
-     */
-    @Test
-    public void testJson2string() throws Exception {
-        fastjson.json2string();
-    }
+    private FlatJsonService flat;
 
     @Test
-    public void testFaltObject() throws Exception {
-        fastjson.flatNTI();
+    public void testFlatNTI() throws Exception {
+        flat.flatNTI();
     }
+
 
 } 
