@@ -1,8 +1,8 @@
-package test.org.after90.someTest.map;
+package test.org.after90.someTest.list;
 
 import lombok.extern.slf4j.Slf4j;
 import org.after90.Application;
-import org.after90.someTest.map.MapService;
+import org.after90.someTest.list.ListService;
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.After;
@@ -12,26 +12,34 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 /**
- * MapService Tester.
+ * ListService Tester.
  *
  * @author <Authors name>
  * @version 1.0
- * @since <pre>Apr 28, 2017</pre>
+ * @since <pre>Jun 16, 2017</pre>
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
 @Slf4j
-public class MapServiceTest {
+public class ListServiceTest {
     @Autowired
-    private MapService map;
+    private ListService list;
 
-    @Test
-    public void testDoSomeTest() throws Exception {
-        map.doSomeTest();
+    @Before
+    public void before() throws Exception {
     }
 
-    @Test
-    public void testDoHash() throws Exception {
-        map.doHash();
+    @After
+    public void after() throws Exception {
     }
+
+    /**
+     * Method: doTest()
+     */
+    @Test
+    public void testDoTest() throws Exception {
+        list.doTest();
+    }
+
+
 } 
