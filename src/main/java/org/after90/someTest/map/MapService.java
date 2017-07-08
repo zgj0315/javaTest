@@ -27,4 +27,19 @@ public class MapService {
 
         }
     }
+
+    public void readMap() {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("age", 25);
+        map.put("name", "zhaogj");
+        Map<String, Object> car = new HashMap<String, Object>();
+        car.put("bmw", "535Li");
+        car.put("bmw", "740Li");
+        map.put("car", car);
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            String strKey = entry.getKey();
+            Object value = entry.getValue();
+            log.info("strKey:{},value.class:{}", strKey, value.getClass().getName());
+        }
+    }
 }
